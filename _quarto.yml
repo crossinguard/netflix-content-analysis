@@ -1,0 +1,16 @@
+project:
+  type: website
+  output-dir: docs
+
+highlight-style: default
+code-block-bg: $primary-faded
+code-block-border-left: $primary-light
+
+format:
+  html:
+    theme: custom.scss
+    link-external-icon: true
+    toc: true
+    anchor-sections: false
+    number-sections: true
+    df-print: paged

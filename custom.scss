@@ -1,0 +1,62 @@
+/*-- scss:defaults --*/
+$primary: #599976 !default;
+$primary-faded: rgba($primary, 0.05) !default;
+$primary-light: lighten($primary, 20%) !default;
+$primary-dark: darken($primary, 20%) !default;
+$primary-darkest: darken($primary, 30%) !default;
+
+$secondary: #f46186 !default;
+$secondary-faded: rgba($secondary, 0.05) !default;
+$secondary-light: lighten($secondary, 20%) !default;
+$secondary-dark: darken($secondary, 20%) !default;
+$secondary-darkest: darken($secondary, 30%) !default;
+
+$light: #edf6f9 !default;
+$light-faded: rgba($light, 0.05) !default;
+
+$dark: #222222 !default;
+$dark-faded: rgba($dark, 0.05) !default;
+
+$body-bg: $dark !default;
+$body-color: $light !default;
+
+// Font
+$web-font-path: "https://fonts.googleapis.com/css2?family=Fira+Code&family=Fira+Sans:wght@100;400;700&display=swap" !default;
+@if $web-font-path {
+  @import url($web-font-path);
+}
+
+$font-family-sans-serif: "Fira Sans", sans-serif;
+$font-family-monospace: "Fira Code", monospace;
+
+/*-- scss:rules --*/
+body {
+  a {
+    text-decoration: none;
+  }
+
+  p {
+    font-weight: 100;
+  }
+}
+
+code {
+  color: $secondary;
+}
+
+.header-section-number {
+  color: $secondary;
+}
+
+span[id^="cb"] {
+  color: $secondary-light !important;
+  font-weight: 100 !important;
+}
+
+// .fu,
+// .st,
+// .sc,
+// .ot,
+// .at {
+//   color: $info !important;
+// }
