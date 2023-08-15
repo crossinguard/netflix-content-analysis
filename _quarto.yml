@@ -2,15 +2,17 @@ project:
   type: website
   output-dir: docs
 
-highlight-style: default
-code-block-bg: $primary-faded
-code-block-border-left: $primary-light
+link-external-icon: true
+anchor-sections: false
 
 format:
   html:
     theme: custom.scss
-    link-external-icon: true
     toc: true
-    anchor-sections: false
-    number-sections: true
+    toc-depth: 4
     df-print: paged
+    highlight-style: monochrome
+    code-overflow: wrap
+    code-block-bg: $dark-alt
+    code-block-border-left: $primary
+    linkcolor: $primary-light

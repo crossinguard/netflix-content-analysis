@@ -1,5 +1,8 @@
 ---
 title: "Netflix Content Analyis"
+author: "Brett Egbert"
+date: "2023-08-15"
+title-block-banner: true
 ---
 
 ## Environment
@@ -16,13 +19,13 @@ The following open-source tools were used to create this report.
 
 VS Code was used to create a `.qmd` Quarto document, which employs markdown and code blocks similar to a [Jupyter notebook](https://jupyter.org/). Quarto uses [pandoc](https://pandoc.org/) to convert the `.qmd` document into an HTML file, which in turn can be customized visually using CSS and Bootstrap variables.
 
-The end result is a highly adaptable document cabable of displaying complex code and data visualizations. 
+The end result is a human-readable source document that is highly adaptable and cabable of displaying complex information. 
 
 ### Library
 
 For this data preparation and exploration I made use of the [tidyverse](https://www.tidyverse.org/) collection of data science packages within the R coding language.
 
-```{r}
+```{r import-library}
 #| output: false
 # import libraries
 library(tidyverse)
@@ -51,9 +54,9 @@ This dataset contains listings of all movies and tv shows available on Netflix.
 
 : Netflix Movies and TV Shows dataset  columns
 
-I imported the csv into a tibble (i.e., dataframe) named `df`.
+I imported the csv into a dataframe named `df`.
 
-```{r}
+```{r import-data}
 #| output: false
 # import csv as dataframe
 df <- read_csv("data\\netflix_titles.csv")
@@ -63,498 +66,296 @@ df <- read_csv("data\\netflix_titles.csv")
 
 The `head()` preview allows us to view the first few rows of data while the `glimpse()` function identifies column names, column data types, and sample values for each column. 
 
-```{r}
+```{r preview-data}
 # preview dataframe
 df %>%
-  head()
+  head(10)
 
 # review column data types and sample values
 df %>%
   glimpse()
 ```
 
-
 ### Data Issues
 The following issues are to be explored further and addressed if able.
 
-- The `cast` column contains multiple cast members as a single value
-  - convert column values to a list of values
-- The `date_added` column is a string in the form "Month Day, Year" 
-  - convert to YYYY-MM-DD datetime
-- The `ratings` column contains several misplaced `duration` values
-  - copy misplaced values to `duration` and replace existing `ratings` values with NA
-- The `duration` column uses different units based on the type (e.g., shows = seasons, movies = minutes)
-  - segment df by type, remove units from values
-- The are `NA` values throughout many columns
+1. `director`, `cast`, `country`, and `listed_in` columns contain multiple values per column
+2. `date_added` column is a string in the form "Month Day, Year"
+3. `ratings` column contains several misplaced `duration` values
+4. `duration` column uses different units based on the type (e.g., shows = seasons, movies = minutes)
 
-#### Column: `cast`
+#### Issue 1: `director`, `cast`, `country`, `listed_in`
 
-I addressed the multiple cast members by splitting the string values in `cast` using a comma delimiter. This created a list of distinct cast members still contained in the original `cast` column.
+I addressed the multiple values by separating the indicated columns from the primary df. Those columns were then lengthened so each multi-value entry was broken up into new separate rows.
 
-```{r}
-# convert cast column to list
-df <- df %>%
-  mutate(cast = str_split(cast, ", "))
+```{r issue-1-fix}
+# exclude multi-value columns
+df_content <- df %>%
+  select(-director, -cast, -country, -listed_in)
+
+# separate df and lengthen for director, cast, country, listed_in
+df_director <- df %>%
+  select(show_id, director) %>%
+  separate_longer_delim(director, delim = ", ")
+
+# separate df and lengthen for cast
+df_cast <- df %>%
+  select(show_id, cast) %>%
+  separate_longer_delim(cast, delim = ", ")
+
+# separate df and lengthen for country
+df_country <- df %>%
+  select(show_id, country) %>%
+  separate_longer_delim(country, delim = ", ")
+
+# separate df and lengthen for genre
+df_genre <- df %>%
+  select(show_id, listed_in) %>%
+  rename(genre = listed_in) %>% # rename column
+  separate_longer_delim(genre, delim = ", ")
 ```
 
-```{r}
-# preview dataframe
-df %>%
-  select(title, type, cast) %>%
-  head()
+During this phase it was discovered that several countries had a trailing comma, which was confirmed to exist in the original dataset. A last step was taken in `df_country` to remove this trailing comma.
 
-# preview cast list values
-df$cast %>%
-  head()
+```{r issue-1-country-comma}
+df_country <- df_country %>%
+  mutate(country = str_remove(country, ",+$"))
 ```
 
-We can now confirm that the `cast` column correctly captures the original information in a list value. Each cast list indicates the number of cast members included and can be expanded when needed.
+##### Verify changes
 
-#### Column: `date_added`
+```{r issue-1-verify}
+# preview content
+df_content %>%
+  head(20)
 
-I addressed the date format by converting to an appropriate data type for the column `date_added`. This converts a string-based value of "September 25, 2021" into a date-based value of "2021-09-25" in the ISO 8601 international date standard.
+# preview director
+df_director %>%
+  head(20)
 
-```{r}
+# preview cast
+df_cast %>%
+  head(20)
+
+# preview country
+df_country %>%
+  head(20)
+
+# preview genre
+df_genre %>%
+  head(20)
+```
+
+We can now confirm that the new lengthened dataframes correctly capture the original information on individual rows, such as with the `show_id` "s7" with multiple directors.
+
+#### Issue 2: `date_added`
+
+I addressed the date format by converting to an appropriate data type for the column `date_added` within `df_content`. This converts a string-based value of "September 25, 2021" into a date-based value of "2021-09-25" in the ISO 8601 international date standard.
+
+```{r issue-2-fix}
 # convert date format and data type
-df <- df %>%
+df_content <- df_content %>%
   mutate(date_added = as.Date(date_added, format = "%B %d, %Y"))
 ```
 
-```{r}
+##### Verify changes
+
+```{r issue-2-verify}
 # preview date_added values
-df %>%
-  select(title, type, date_added) %>%
+df_content %>%
+  select(show_id, type, date_added) %>%
   head()
 ```
 
-#### Column: `rating` => `duration`
+#### Issue 3: `rating` => `duration`
 
 A value count of the `rating` column in `df` reveals three misplaced `duration` values. 
 
-```{r}
+```{r issue-3-explore}
 # rating value counts
-df %>%
+df_content %>%
   count(rating)
 
 # view entries with "min" in rating
-df %>%
+df_content %>%
   filter(grepl("min", rating)) %>%
   select(title, rating, duration)
 ```
 
-To correct the issue I copied the misplaced values into `duration` and updated the values in `rating` to be `NA` missing values
+The three "Louis C.K." titles incorrectly indicate a duration in place of a rating. To correct the issue I copied the misplaced values into `duration` and updated the values in `rating` to be `NA` missing values
 
-```{r}
+```{r issue-3-fix}
 # replace "min" values in rating with NA and copy to duration
-df <- df %>%
+df_content <- df_content %>%
   mutate(
     duration = ifelse(grepl(" min", rating), rating, duration),
     rating = ifelse(grepl(" min", rating), NA, rating)
   )
 ```
 
-```{r}
+##### Verify changes
+
+```{r issue-3-verify}
 # verify changes - rating value counts
-df %>%
+df_content %>%
   count(rating)
 
 # verify changes - view entries with "min" in rating
-df %>%
+df_content %>%
   filter(grepl("min", rating)) %>%
   select(title, rating, duration)
 
 # verify changes - view entries with "Louis" in title
-df %>%
+df_content %>%
   filter(str_starts(title, "Louis")) %>%
   select(title, rating, duration)
 ```
 
-#### Column: `duration`
+During verification if was confirmed that the `rating` column now only contains rating values and that the "Louis" titles have been corrected.
 
-I addressed the mixed units in the `duration` column by segmenting the dataframe into two new dataframes, one containing tv shows (`df_tv`) and the other movies (`df_movie`). In both cases I removed the trailing characters (i.e., units) and converted the values into numeric data types in a new, more descriptive column. The original`duration` column was preserved.
+#### Issue 4: `duration`
 
-```{r}
-# only tv shows
-df_tv <- df %>%
-  filter(type == "TV Show")
+I addressed the mixed units in the `duration` column by separating the column into two columns, one containing tv shows (`duration_n_seasons`) and the other movies (`duration_mins`). In both cases I removed the trailing characters (i.e., units) and converted the values into numeric data types. The original`duration` column was preserved.
 
-# remove units and rename column
-df_tv <- df_tv %>%
-  mutate(n_seasons = as.numeric(str_remove(duration, " .*")))
-
-# preview n_seasons
-df_tv %>%
-  select(title, type, duration, n_seasons)
-```
-
-
-```{r}
-# only movies
-df_movie <- df %>%
-  filter(type == "Movie")
-
-# remove units and rename column
-df_movie <- df_movie %>%
-  mutate(duration_mins = as.numeric(str_remove(duration, " .*")))
-
-df_movie %>%
-  select(title, type, duration, duration_mins)
-```
-
-#### Dataframe: `NA`
-To conclude my data preparations, I expored the missing values (`NA`) present in each of the type-based dataframes `df_tv` and `df_movie`.
-
-##### TV Shows
-
-```{r}
-# count the number of non-missing values in tv shows
-df_tv %>%
-  summarize_all(list(~ sum(!is.na(.))))
-
-# count the number of NA missing values in tv shows
-df_tv %>%
-  summarize_all(list(~ sum(is.na(.))))
-```
-
-The columns `director`, `cast`, `country`, `date_added`, and `rating` contain missing values. 
-
-The `director` for a TV show is often a collection of directors depending on the episode and therefore not unexpected for missing values. No adjustments were made.
-
-The `rating` column was missing very few values and was examined in comparison to the remaining flagged columns.
-
-```{r}
-# NA values - rating column
-df_tv %>%
-  filter(is.na(rating)) %>%
-  select(title, cast, country, date_added, rating)
-```
-
-The two entries with missing values for `rating` are from different countries and years with no other missing values. No adjustments were made.
-
-I next explored the remaining three columns: `cast`, `country`, and `date_added` by counting the missing values in each in comparison to each other. This approach should inform whether a missing value in one column has a relationship to a missing value in another.
-
-```{r}
-# df_tv with missing value flags for cast, country, date_added
-df_missing_tv <- df_tv %>%
+```{r issue-4-fix}
+# create new columns for duration
+df_content <- df_content %>%
   mutate(
-    cast_missing = is.na(cast),
-    country_missing = is.na(country),
-    date_added_missing = is.na(date_added)
+    duration_n_seasons = ifelse(type == "TV Show", as.numeric(str_remove(duration, " .*")), NA),
+    duration_mins = ifelse(type == "Movie", as.numeric(str_remove(duration, " .*")), NA)
   )
-
-df_missing_tv %>%
-  select(title, cast_missing, country_missing, date_added_missing)
 ```
 
-```{r}
-#| warning: false
+##### Verify changes
 
-# summary counts of missing value pairings
-missing_counts_tv <- df_missing_tv %>%
-  group_by(cast_missing, country_missing, date_added_missing) %>%
-  summarize(count = n())
-
-missing_counts_tv
+```{r issue-4-verify}
+# preview duration values
+df_content %>%
+  select(type, duration, duration_n_seasons, duration_mins)
 ```
 
-The most common occurance was no missing values, followed by missing only the `country` value or the `cast` value. Of the 2,676 entries for TV shows in `df_tv`, only 99 entries (3.7%) are missing values across multiple columns.
+### Workflow Summary
 
-None of these findings raised concerns as to the usability of this data and no actions were needed to address the missing values.
-
-##### Movies
-
-```{r}
-# count the number of non-missing values in movies
-df_movie %>%
-  summarize_all(list(~ sum(!is.na(.))))
-
-# count the number of NA values in movies
-df_movie %>%
-  summarize_all(list(~ sum(is.na(.))))
-```
-
-The columns `director`, `cast`, `country`, and `rating` contain missing values.
-
-The `rating` column was missing very few values and was examined in comparison to the other flagged columns.
-
-```{r}
-# NA values - rating column
-df_movie %>%
-  filter(is.na(rating)) %>%
-  select(title, director, cast, country, rating)
-```
-
-The *Louis C.K.* entries were edited earlier for their misplaced `duration` values, so these `NA` values were expected. No adjustments were made.
-
-I next explored the remaining three columns: `director`, `cast`, and `country` by counting the missing values in each in comparison to each other. This approach should inform whether a missing value in one column has a relationship to a missing value in another.
-
-```{r}
-# df_movie with missing value flags for director, cast, country
-df_missing_movie <- df_movie %>%
-  mutate(
-    director_missing = is.na(director),
-    cast_missing = is.na(cast),
-    country_missing = is.na(country)
-  )
-
-df_missing_movie %>%
-  select(title, director_missing, cast_missing, country_missing)
-```
-
-```{r}
-#| warning: false
-
-# summary counts of missing value pairings
-missing_counts_movie <- df_missing_movie %>%
-  group_by(director_missing, cast_missing, country_missing) %>%
-  summarize(count = n())
-
-missing_counts_movie
-```
-
-The most common occurance was no missing values, followed by missing only the `country` value or the `cast` value. This same trend was observed with `df_tv`. Of the 6,131 entries for movies in `df_movie`, only 144 entries (2.3%) are missing values across multiple columns.
-
-None of these findings raised concerns as to the usability of this data and no actions were needed to address the missing values.
-
-### Workflow summary
-
-```{mermaid}
+```{mermaid workflow-summary}
 %%{init: {"flowchart": {"htmlLabels": false}} }%%
 flowchart TB
-  import["import data as df"]
+  import(["import data as df"])
   identify["identify issues"]
-  issues["address column issues:
-  - column: cast 
-  - column: date_added
-  - column: rating => duration
-  - column: duration"]
-  tv["segment tv as df_tv"]
-  movie["segment movies as df_movie"]
-  NA["investigate NA values"]
-  NA2["investigate NA values"]
-  tv-clean["visualize & export data as df_tv_clean"]
-  movie-clean["visualize & export data as df_movie_clean"]
+  adjust["adjust date format, misplaced values, inconsistent units"]
+  content(["df_content"])
+  lengthen(["lengthen multi-value columns"])
+  multi(["df_director
+  df_cast
+  df_country
+  df_genre"])
 
-  import --> identify --> issues --> tv & movie
-  tv --> NA --> tv-clean
-  movie --> NA2 --> movie-clean
+  import --- identify --- adjust --- content
+  identify --- lengthen --- multi
 ```
 
-## Visualize
+## Investigate
 
-### Count by Release Decade
+I began by removing the missing values from within my column-specific dataframes. I then counted the number of titles per member in descending order.
 
-```{r}
-#| echo: false
+### `df_director`
 
-# identify release decade - tv shows
-df_tv <- df_tv %>%
-  mutate(release_decade = floor(release_year / 10) * 10)
+```{r analysis-director}
+# remove rows with missing director values
+df_director_clean <- df_director %>%
+  drop_na(director)
 
-# identify release decade - movies
-df_movie <- df_movie %>%
-  mutate(release_decade = floor(release_year / 10) * 10)
+# count number of titles per director
+df_director_clean %>%
+  group_by(director) %>%
+  summarize(title_count = n_distinct(show_id)) %>%
+  arrange(desc(title_count))
 ```
 
-```{r}
-#| echo: false
+### `df_cast`
 
-# identify Netflix added year - tv shows
-df_tv$year_added <- year(df_tv$date_added)
+```{r analysis-cast}
+# remove rows with missing cast values
+df_cast_clean <- df_cast %>%
+  drop_na(cast)
 
-# identify Netflix added year - movies
-df_movie$year_added <- year(df_movie$date_added)
+# count number of titles per cast
+df_cast_clean %>%
+  group_by(cast) %>%
+  summarize(title_count = n_distinct(show_id)) %>%
+  arrange(desc(title_count))
 ```
 
-```{r}
-#| echo: false
+### `df_country`
+
+```{r analysis-country}
+# remove rows with missing country values
+df_country_clean <- df_country %>%
+  drop_na(country)
+
+# count number of titles per country
+df_country_clean %>%
+  group_by(country) %>%
+  summarize(title_count = n_distinct(show_id)) %>%
+  arrange(desc(title_count))
+```
+
+### `df_genre`
+
+```{r analysis-genre}
+# remove rows with missing genre values
+df_genre_clean <- df_genre %>%
+  drop_na(genre)
+
+# count number of titles per genre
+df_genre_clean %>%
+  group_by(genre) %>%
+  summarize(title_count = n_distinct(show_id)) %>%
+  arrange(desc(title_count))
+```
+
+### `df_content`
+
+To finish my analysis I explored the main data found in `df_content`.
+
+```{r analysis-content-release-year-count}
 #| warning: false
-
-# Set font family
-theme_set(theme_gray(base_family = "Fira Sans"))
-
-# Define colors
-bg_color <- "#333333"
-text_color <- "#edf6f9"
-primary_color <- "#4df3df"
-secondary_color <- "#f46186"
-tertiary_color <- "#f4a261"
-
-# visualize tv shows by release decade
-df_tv %>%
-  count(release_decade) %>%
-  ggplot(aes(x = release_decade, y = n)) +
-  geom_col(fill = primary_color) +
-  geom_text(aes(label = n), vjust = -0.5, size = 4, color = text_color) +
-  labs(x = "Release Decade", y = "Count", title = "TV Shows by Release Decade") +
-  theme_minimal() +
-  theme(
-    plot.title = element_text(size = 20, face = "bold", color = text_color),
-    axis.title = element_text(size = 16, color = text_color),
-    axis.text = element_text(size = 14, color = text_color),
-    panel.background = element_rect(fill = bg_color),
-    plot.background = element_rect(fill = bg_color),
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(),
-    legend.background = element_rect(fill = bg_color),
-    legend.text = element_text(color = text_color),
-    legend.title = element_text(color = text_color)
-  ) +
-  scale_x_continuous(breaks = seq(1920, 2020, by = 20))
+# title count by release year & type
+df_content %>% 
+  group_by(release_year, type) %>% 
+  summarize(title_count = n_distinct(show_id)) %>%
+  pivot_wider(names_from = type, values_from = title_count, names_prefix = "count_") %>%
+  arrange(release_year)
 ```
 
-```{r}
-#| echo: false
+```{r analysis-content-year-added-count}
 #| warning: false
-
-# visualize movies by release decade
-df_movie %>%
-  count(release_decade) %>%
-  ggplot(aes(x = release_decade, y = n)) +
-  geom_col(fill = secondary_color) +
-  geom_text(aes(label = n), vjust = -0.5, size = 4, color = text_color) +
-  labs(x = "Release Decade", y = "Count", title = "Movies by Release Decade") +
-  theme_minimal() +
-  theme(
-    plot.title = element_text(size = 20, face = "bold", color = text_color),
-    axis.title = element_text(size = 16, color = text_color),
-    axis.text = element_text(size = 14, color = text_color),
-    panel.background = element_rect(fill = bg_color),
-    plot.background = element_rect(fill = bg_color),
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(),
-    legend.background = element_rect(fill = bg_color),
-    legend.text = element_text(color = text_color),
-    legend.title = element_text(color = text_color)
-  ) +
-  scale_x_continuous(breaks = seq(1920, 2020, by = 20))
+# title count by year added & type
+df_content %>% 
+  mutate(year_added = year(date_added)) %>% 
+  group_by(year_added, type) %>% 
+  summarize(title_count = n_distinct(show_id)) %>%
+  pivot_wider(names_from = type, values_from = title_count, names_prefix = "count_") %>%
+  arrange(year_added)
 ```
 
-### Count by Release Decade to Year Added
+## Export
 
-```{r}
-#| echo: false
-#| warning: false
-
-# visualize tv shows release decade to year added
-df_tv %>%
-  group_by(release_decade, year_added) %>%
-  summarise(n = n()) %>%
-  ggplot(aes(x = release_decade, y = year_added, size = n)) +
-  geom_point(color = primary_color, alpha = 0.5) +
-  geom_text(aes(label = n), vjust = -0.5, size = 4, color = text_color) +
-  labs(x = "Release Decade", y = "Year Added", title = "TV Shows by Release Decade and Year Added") +
-  theme_minimal() +
-  theme(
-    plot.title = element_text(size = 20, face = "bold", color = text_color),
-    axis.title = element_text(size = 16, color = text_color),
-    axis.text = element_text(size = 14, color = text_color),
-    panel.background = element_rect(fill = bg_color),
-    plot.background = element_rect(fill = bg_color),
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(),
-    legend.background = element_rect(fill = bg_color),
-    legend.text = element_text(color = text_color),
-    legend.title = element_text(color = text_color)
-  ) +
-  scale_x_continuous(breaks = seq(1920, 2020, by = 20))
-```
-
-```{r}
-#| echo: false
-#| warning: false
-
-# visualize movie shows release decade to year added
-df_movie %>%
-  group_by(release_decade, year_added) %>%
-  summarise(n = n()) %>%
-  ggplot(aes(x = release_decade, y = year_added, size = n)) +
-  geom_point(color = secondary_color, alpha = 0.5) +
-  geom_text(aes(label = n), vjust = -0.5, size = 4, color = text_color) +
-  labs(x = "Release Decade", y = "Year Added", title = "Movies by Release Decade and Year Added") +
-  theme_minimal() +
-  theme(
-    plot.title = element_text(size = 20, face = "bold", color = text_color),
-    axis.title = element_text(size = 16, color = text_color),
-    axis.text = element_text(size = 14, color = text_color),
-    panel.background = element_rect(fill = bg_color),
-    plot.background = element_rect(fill = bg_color),
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(),
-    legend.background = element_rect(fill = bg_color),
-    legend.text = element_text(color = text_color),
-    legend.title = element_text(color = text_color)
-  ) +
-  scale_x_continuous(breaks = seq(1920, 2020, by = 20))
-```
-
-### Avg. Seasons per Rating
-
-```{r}
-#| echo: false
-#| warning: false
-
-# Calculate the average number of seasons per rating category and reorder the bars from greatest to least
-df_tv %>%
-  group_by(rating) %>%
-  summarise(avg_n_seasons = mean(n_seasons), count = n()) %>%
-  ggplot(aes(x = reorder(rating, -avg_n_seasons), y = avg_n_seasons)) +
-  geom_bar(stat = "identity", fill = primary_color) +
-  geom_text(aes(label = count), vjust = -0.5, size = 4, color = text_color) +
-  labs(x = "Rating", y = "Average Number of Seasons", title = "Average Number of Seasons per Rating Category") +
-  theme_minimal() +
-  theme(
-    plot.title = element_text(size = 20, face = "bold", color = text_color),
-    axis.title = element_text(size = 16, color = text_color),
-    axis.text = element_text(size = 14, color = text_color),
-    panel.background = element_rect(fill = bg_color),
-    plot.background = element_rect(fill = bg_color),
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(),
-    legend.background = element_rect(fill = bg_color),
-    legend.text = element_text(color = text_color),
-    legend.title = element_text(color = text_color)
-  ) +
-  coord_flip()
-```
-
-```{r}
-#| echo: false
-#| warning: false
-
-# Calculate the average duration (mins) per rating category and reorder the bars from greatest to least
-df_movie %>%
-  group_by(rating) %>%
-  summarise(avg_duration_mins = mean(duration_mins), count = n()) %>%
-  ggplot(aes(x = reorder(rating, -avg_duration_mins), y = avg_duration_mins)) +
-  geom_bar(stat = "identity", fill = secondary_color) +
-  geom_text(aes(label = count), vjust = -0.5, size = 4, color = text_color) +
-  labs(x = "Rating", y = "Average Duration (mins)", title = "Average Duration (mins) per Rating Category") +
-  theme_minimal() +
-  theme(
-    plot.title = element_text(size = 20, face = "bold", color = text_color),
-    axis.title = element_text(size = 16, color = text_color),
-    axis.text = element_text(size = 14, color = text_color),
-    panel.background = element_rect(fill = bg_color),
-    plot.background = element_rect(fill = bg_color),
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(),
-    legend.background = element_rect(fill = bg_color),
-    legend.text = element_text(color = text_color),
-    legend.title = element_text(color = text_color)
-  ) +
-  coord_flip()
-```
-
-### Output
-
-I concluded by exporting `df_tv` and `df_movie` for use in Tableau.
+The primary analysis will take place in a Tableau dashboard^[coming soon!]. At this point the dataframes were exported as csv files for use in other applications.
 
 
-```{r}
-# export as csv - tv shows
-# write_csv(df_tv, "output/df_tv_clean.csv")
+```{r export-csv}
+# Export df_content to CSV
+write_csv(df_content, file.path("data", "df_content.csv"))
 
-# export as csv - movies
-# write_csv(df_movie, "output/df_movie_clean.csv")
+# Export df_director to CSV
+write_csv(df_director_clean, file.path("data", "df_director.csv"))
+
+# Export df_cast to CSV
+write_csv(df_cast_clean, file.path("data", "df_cast.csv"))
+
+# Export df_country to CSV
+write_csv(df_country_clean, file.path("data", "df_country.csv"))
+
+# Export df_genre to CSV
+write_csv(df_genre_clean, file.path("data", "df_genre.csv"))
 ```
