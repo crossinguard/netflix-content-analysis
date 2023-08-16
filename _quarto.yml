@@ -3,13 +3,30 @@ project:
   output-dir: docs
 
 link-external-icon: true
+link-external-newwindow: true
 anchor-sections: false
+reference-location: margin
+
+website:
+  favicon: favicon.ico
+  search:
+    location: navbar
+    type: overlay
+  navbar:
+    title: Data Analysis
+    logo: resources\logo.png
+  page-footer:
+    background: $primary-faded
+    center:
+      - icon: envelope-fill
+        href: mailto:w.brett.egbert@gmail.com
+      - icon: github
+        href: https://github.com/crossinguard
+    right: "Egbert &copy; 2023"
 
 format:
   html:
     theme: custom.scss
-    toc: true
-    toc-depth: 4
     df-print: paged
     highlight-style: monochrome
     code-overflow: wrap

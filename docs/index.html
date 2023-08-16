@@ -60,11 +60,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
+<link href="./favicon.ico" rel="icon">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -74,11 +76,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
-  "location": "sidebar",
+  "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
-  "panel-placement": "start",
-  "type": "textbox",
+  "panel-placement": "end",
+  "type": "overlay",
   "limit": 20,
   "language": {
     "search-no-results-text": "No results",
@@ -103,81 +105,74 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </head>
 
-<body>
+<body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
-<!-- content -->
-<header id="title-block-header" class="quarto-title-block default page-columns page-full">
-  <div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-body">
-      <h1 class="title">Netflix Content Analyis</h1>
-                      </div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a href="./index.html" class="navbar-brand navbar-brand-logo">
+    <img src="./resources\logo.png" alt="" class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Data Analysis</span>
+    </a>
   </div>
-    
-  
-  <div class="quarto-title-meta">
-
-      <div>
-      <div class="quarto-title-meta-heading">Author</div>
-      <div class="quarto-title-meta-contents">
-               <p>Brett Egbert </p>
-            </div>
-    </div>
-      
-      <div>
-      <div class="quarto-title-meta-heading">Published</div>
-      <div class="quarto-title-meta-contents">
-        <p class="date">August 15, 2023</p>
-      </div>
-    </div>
-    
-      
-    </div>
-    
-  
-  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+        <div class="quarto-navbar-tools ms-auto">
+</div>
+          <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#environment" id="toc-environment" class="nav-link active" data-scroll-target="#environment">Environment</a>
-  <ul>
-  <li><a href="#tools" id="toc-tools" class="nav-link" data-scroll-target="#tools">Tools</a></li>
-  <li><a href="#library" id="toc-library" class="nav-link" data-scroll-target="#library">Library</a></li>
-  <li><a href="#dataset" id="toc-dataset" class="nav-link" data-scroll-target="#dataset">Dataset</a></li>
-  </ul></li>
-  <li><a href="#prepare" id="toc-prepare" class="nav-link" data-scroll-target="#prepare">Prepare</a>
-  <ul>
-  <li><a href="#data-issues" id="toc-data-issues" class="nav-link" data-scroll-target="#data-issues">Data Issues</a>
-  <ul class="collapse">
-  <li><a href="#issue-1-director-cast-country-listed_in" id="toc-issue-1-director-cast-country-listed_in" class="nav-link" data-scroll-target="#issue-1-director-cast-country-listed_in">Issue 1: <code>director</code>, <code>cast</code>, <code>country</code>, <code>listed_in</code></a></li>
-  <li><a href="#issue-2-date_added" id="toc-issue-2-date_added" class="nav-link" data-scroll-target="#issue-2-date_added">Issue 2: <code>date_added</code></a></li>
-  <li><a href="#issue-3-rating-duration" id="toc-issue-3-rating-duration" class="nav-link" data-scroll-target="#issue-3-rating-duration">Issue 3: <code>rating</code> =&gt; <code>duration</code></a></li>
-  <li><a href="#issue-4-duration" id="toc-issue-4-duration" class="nav-link" data-scroll-target="#issue-4-duration">Issue 4: <code>duration</code></a></li>
-  </ul></li>
-  <li><a href="#workflow-summary" id="toc-workflow-summary" class="nav-link" data-scroll-target="#workflow-summary">Workflow Summary</a></li>
-  </ul></li>
-  <li><a href="#investigate" id="toc-investigate" class="nav-link" data-scroll-target="#investigate">Investigate</a>
-  <ul>
-  <li><a href="#df_director" id="toc-df_director" class="nav-link" data-scroll-target="#df_director"><code>df_director</code></a></li>
-  <li><a href="#df_cast" id="toc-df_cast" class="nav-link" data-scroll-target="#df_cast"><code>df_cast</code></a></li>
-  <li><a href="#df_country" id="toc-df_country" class="nav-link" data-scroll-target="#df_country"><code>df_country</code></a></li>
-  <li><a href="#df_genre" id="toc-df_genre" class="nav-link" data-scroll-target="#df_genre"><code>df_genre</code></a></li>
-  <li><a href="#df_content" id="toc-df_content" class="nav-link" data-scroll-target="#df_content"><code>df_content</code></a></li>
-  </ul></li>
-  <li><a href="#export" id="toc-export" class="nav-link" data-scroll-target="#export">Export</a></li>
-  </ul>
-</nav>
+        
     </div>
 <!-- main -->
-<main class="content quarto-banner-title-block" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Netflix Content Analyis</h1>
+</div>
 
 
 
+<div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Brett Egbert </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">August 15, 2023</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+<div>
+  <div class="abstract">
+    <div class="abstract-title">Abstract</div>
+    Preparation of Netflix data for use in a Tableau dashboard.
+  </div>
+</div>
+
+</header>
+
+<blockquote class="blockquote">
+<p>To view my professional profile, cv, and other portfolio items, please visit <a href="https://wbegbert.netlify.app">wbegbert.netlify.app</a></p>
+</blockquote>
 <section id="environment" class="level2">
 <h2 data-anchor-id="environment">Environment</h2>
 <section id="tools" class="level3">
@@ -309,12 +304,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># preview dataframe</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>df <span class="sc">%&gt;%</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 
 <div data-pagedtable="false">
   <script data-pagedtable-source="" type="application/json">
-{"columns":[{"label":["show_id"],"name":[1],"type":["chr"],"align":["left"]},{"label":["type"],"name":[2],"type":["chr"],"align":["left"]},{"label":["title"],"name":[3],"type":["chr"],"align":["left"]},{"label":["director"],"name":[4],"type":["chr"],"align":["left"]},{"label":["cast"],"name":[5],"type":["chr"],"align":["left"]},{"label":["country"],"name":[6],"type":["chr"],"align":["left"]},{"label":["date_added"],"name":[7],"type":["chr"],"align":["left"]},{"label":["release_year"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["rating"],"name":[9],"type":["chr"],"align":["left"]},{"label":["duration"],"name":[10],"type":["chr"],"align":["left"]},{"label":["listed_in"],"name":[11],"type":["chr"],"align":["left"]},{"label":["description"],"name":[12],"type":["chr"],"align":["left"]}],"data":[{"1":"s1","2":"Movie","3":"Dick Johnson Is Dead","4":"Kirsten Johnson","5":"NA","6":"United States","7":"September 25, 2021","8":"2020","9":"PG-13","10":"90 min","11":"Documentaries","12":"As her father nears the end of his life, filmmaker Kirsten Johnson stages his death in inventive and comical ways to help them both face the inevitable."},{"1":"s2","2":"TV Show","3":"Blood & Water","4":"NA","5":"Ama Qamata, Khosi Ngema, Gail Mabalane, Thabang Molaba, Dillon Windvogel, Natasha Thahane, Arno Greeff, Xolile Tshabalala, Getmore Sithole, Cindy Mahlangu, Ryle De Morny, Greteli Fincham, Sello Maake Ka-Ncube, Odwa Gwanya, Mekaila Mathys, Sandi Schultz, Duane Williams, Shamilla Miller, Patrick Mofokeng","6":"South Africa","7":"September 24, 2021","8":"2021","9":"TV-MA","10":"2 Seasons","11":"International TV Shows, TV Dramas, TV Mysteries","12":"After crossing paths at a party, a Cape Town teen sets out to prove whether a private-school swimming star is her sister who was abducted at birth."},{"1":"s3","2":"TV Show","3":"Ganglands","4":"Julien Leclercq","5":"Sami Bouajila, Tracy Gotoas, Samuel Jouy, Nabiha Akkari, Sofia Lesaffre, Salim Kechiouche, Noureddine Farihi, Geert Van Rampelberg, Bakary Diombera","6":"NA","7":"September 24, 2021","8":"2021","9":"TV-MA","10":"1 Season","11":"Crime TV Shows, International TV Shows, TV Action & Adventure","12":"To protect his family from a powerful drug lord, skilled thief Mehdi and his expert team of robbers are pulled into a violent and deadly turf war."},{"1":"s4","2":"TV Show","3":"Jailbirds New Orleans","4":"NA","5":"NA","6":"NA","7":"September 24, 2021","8":"2021","9":"TV-MA","10":"1 Season","11":"Docuseries, Reality TV","12":"Feuds, flirtations and toilet talk go down among the incarcerated women at the Orleans Justice Center in New Orleans on this gritty reality series."},{"1":"s5","2":"TV Show","3":"Kota Factory","4":"NA","5":"Mayur More, Jitendra Kumar, Ranjan Raj, Alam Khan, Ahsaas Channa, Revathi Pillai, Urvi Singh, Arun Kumar","6":"India","7":"September 24, 2021","8":"2021","9":"TV-MA","10":"2 Seasons","11":"International TV Shows, Romantic TV Shows, TV Comedies","12":"In a city of coaching centers known to train India’s finest collegiate minds, an earnest but unexceptional student and his friends navigate campus life."},{"1":"s6","2":"TV Show","3":"Midnight Mass","4":"Mike Flanagan","5":"Kate Siegel, Zach Gilford, Hamish Linklater, Henry Thomas, Kristin Lehman, Samantha Sloyan, Igby Rigney, Rahul Kohli, Annarah Cymone, Annabeth Gish, Alex Essoe, Rahul Abburi, Matt Biedel, Michael Trucco, Crystal Balint, Louis Oliver","6":"NA","7":"September 24, 2021","8":"2021","9":"TV-MA","10":"1 Season","11":"TV Dramas, TV Horror, TV Mysteries","12":"The arrival of a charismatic young priest brings glorious miracles, ominous mysteries and renewed religious fervor to a dying town desperate to believe."},{"1":"s7","2":"Movie","3":"My Little Pony: A New Generation","4":"Robert Cullen, José Luis Ucha","5":"Vanessa Hudgens, Kimiko Glenn, James Marsden, Sofia Carson, Liza Koshy, Ken Jeong, Elizabeth Perkins, Jane Krakowski, Michael McKean, Phil LaMarr","6":"NA","7":"September 24, 2021","8":"2021","9":"PG","10":"91 min","11":"Children & Family Movies","12":"Equestria's divided. But a bright-eyed hero believes Earth Ponies, Pegasi and Unicorns should be pals — and, hoof to heart, she’s determined to prove it."},{"1":"s8","2":"Movie","3":"Sankofa","4":"Haile Gerima","5":"Kofi Ghanaba, Oyafunmike Ogunlano, Alexandra Duah, Nick Medley, Mutabaruka, Afemo Omilami, Reggie Carter, Mzuri","6":"United States, Ghana, Burkina Faso, United Kingdom, Germany, Ethiopia","7":"September 24, 2021","8":"1993","9":"TV-MA","10":"125 min","11":"Dramas, Independent Movies, International Movies","12":"On a photo shoot in Ghana, an American model slips back in time, becomes enslaved on a plantation and bears witness to the agony of her ancestral past."},{"1":"s9","2":"TV Show","3":"The Great British Baking Show","4":"Andy Devonshire","5":"Mel Giedroyc, Sue Perkins, Mary Berry, Paul Hollywood","6":"United Kingdom","7":"September 24, 2021","8":"2021","9":"TV-14","10":"9 Seasons","11":"British TV Shows, Reality TV","12":"A talented batch of amateur bakers face off in a 10-week competition, whipping up their best dishes in the hopes of being named the U.K.'s best."},{"1":"s10","2":"Movie","3":"The Starling","4":"Theodore Melfi","5":"Melissa McCarthy, Chris O'Dowd, Kevin Kline, Timothy Olyphant, Daveed Diggs, Skyler Gisondo, Laura Harrier, Rosalind Chao, Kimberly Quinn, Loretta Devine, Ravi Kapoor","6":"United States","7":"September 24, 2021","8":"2021","9":"PG-13","10":"104 min","11":"Comedies, Dramas","12":"A woman adjusting to life after a loss contends with a feisty bird that's taken over her garden — and a husband who's struggling to find a way forward."}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["show_id"],"name":[1],"type":["chr"],"align":["left"]},{"label":["type"],"name":[2],"type":["chr"],"align":["left"]},{"label":["title"],"name":[3],"type":["chr"],"align":["left"]},{"label":["director"],"name":[4],"type":["chr"],"align":["left"]},{"label":["cast"],"name":[5],"type":["chr"],"align":["left"]},{"label":["country"],"name":[6],"type":["chr"],"align":["left"]},{"label":["date_added"],"name":[7],"type":["chr"],"align":["left"]},{"label":["release_year"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["rating"],"name":[9],"type":["chr"],"align":["left"]},{"label":["duration"],"name":[10],"type":["chr"],"align":["left"]},{"label":["listed_in"],"name":[11],"type":["chr"],"align":["left"]},{"label":["description"],"name":[12],"type":["chr"],"align":["left"]}],"data":[{"1":"s1","2":"Movie","3":"Dick Johnson Is Dead","4":"Kirsten Johnson","5":"NA","6":"United States","7":"September 25, 2021","8":"2020","9":"PG-13","10":"90 min","11":"Documentaries","12":"As her father nears the end of his life, filmmaker Kirsten Johnson stages his death in inventive and comical ways to help them both face the inevitable."},{"1":"s2","2":"TV Show","3":"Blood & Water","4":"NA","5":"Ama Qamata, Khosi Ngema, Gail Mabalane, Thabang Molaba, Dillon Windvogel, Natasha Thahane, Arno Greeff, Xolile Tshabalala, Getmore Sithole, Cindy Mahlangu, Ryle De Morny, Greteli Fincham, Sello Maake Ka-Ncube, Odwa Gwanya, Mekaila Mathys, Sandi Schultz, Duane Williams, Shamilla Miller, Patrick Mofokeng","6":"South Africa","7":"September 24, 2021","8":"2021","9":"TV-MA","10":"2 Seasons","11":"International TV Shows, TV Dramas, TV Mysteries","12":"After crossing paths at a party, a Cape Town teen sets out to prove whether a private-school swimming star is her sister who was abducted at birth."},{"1":"s3","2":"TV Show","3":"Ganglands","4":"Julien Leclercq","5":"Sami Bouajila, Tracy Gotoas, Samuel Jouy, Nabiha Akkari, Sofia Lesaffre, Salim Kechiouche, Noureddine Farihi, Geert Van Rampelberg, Bakary Diombera","6":"NA","7":"September 24, 2021","8":"2021","9":"TV-MA","10":"1 Season","11":"Crime TV Shows, International TV Shows, TV Action & Adventure","12":"To protect his family from a powerful drug lord, skilled thief Mehdi and his expert team of robbers are pulled into a violent and deadly turf war."},{"1":"s4","2":"TV Show","3":"Jailbirds New Orleans","4":"NA","5":"NA","6":"NA","7":"September 24, 2021","8":"2021","9":"TV-MA","10":"1 Season","11":"Docuseries, Reality TV","12":"Feuds, flirtations and toilet talk go down among the incarcerated women at the Orleans Justice Center in New Orleans on this gritty reality series."},{"1":"s5","2":"TV Show","3":"Kota Factory","4":"NA","5":"Mayur More, Jitendra Kumar, Ranjan Raj, Alam Khan, Ahsaas Channa, Revathi Pillai, Urvi Singh, Arun Kumar","6":"India","7":"September 24, 2021","8":"2021","9":"TV-MA","10":"2 Seasons","11":"International TV Shows, Romantic TV Shows, TV Comedies","12":"In a city of coaching centers known to train India’s finest collegiate minds, an earnest but unexceptional student and his friends navigate campus life."},{"1":"s6","2":"TV Show","3":"Midnight Mass","4":"Mike Flanagan","5":"Kate Siegel, Zach Gilford, Hamish Linklater, Henry Thomas, Kristin Lehman, Samantha Sloyan, Igby Rigney, Rahul Kohli, Annarah Cymone, Annabeth Gish, Alex Essoe, Rahul Abburi, Matt Biedel, Michael Trucco, Crystal Balint, Louis Oliver","6":"NA","7":"September 24, 2021","8":"2021","9":"TV-MA","10":"1 Season","11":"TV Dramas, TV Horror, TV Mysteries","12":"The arrival of a charismatic young priest brings glorious miracles, ominous mysteries and renewed religious fervor to a dying town desperate to believe."},{"1":"s7","2":"Movie","3":"My Little Pony: A New Generation","4":"Robert Cullen, José Luis Ucha","5":"Vanessa Hudgens, Kimiko Glenn, James Marsden, Sofia Carson, Liza Koshy, Ken Jeong, Elizabeth Perkins, Jane Krakowski, Michael McKean, Phil LaMarr","6":"NA","7":"September 24, 2021","8":"2021","9":"PG","10":"91 min","11":"Children & Family Movies","12":"Equestria's divided. But a bright-eyed hero believes Earth Ponies, Pegasi and Unicorns should be pals — and, hoof to heart, she’s determined to prove it."},{"1":"s8","2":"Movie","3":"Sankofa","4":"Haile Gerima","5":"Kofi Ghanaba, Oyafunmike Ogunlano, Alexandra Duah, Nick Medley, Mutabaruka, Afemo Omilami, Reggie Carter, Mzuri","6":"United States, Ghana, Burkina Faso, United Kingdom, Germany, Ethiopia","7":"September 24, 2021","8":"1993","9":"TV-MA","10":"125 min","11":"Dramas, Independent Movies, International Movies","12":"On a photo shoot in Ghana, an American model slips back in time, becomes enslaved on a plantation and bears witness to the agony of her ancestral past."},{"1":"s9","2":"TV Show","3":"The Great British Baking Show","4":"Andy Devonshire","5":"Mel Giedroyc, Sue Perkins, Mary Berry, Paul Hollywood","6":"United Kingdom","7":"September 24, 2021","8":"2021","9":"TV-14","10":"9 Seasons","11":"British TV Shows, Reality TV","12":"A talented batch of amateur bakers face off in a 10-week competition, whipping up their best dishes in the hopes of being named the U.K.'s best."},{"1":"s10","2":"Movie","3":"The Starling","4":"Theodore Melfi","5":"Melissa McCarthy, Chris O'Dowd, Kevin Kline, Timothy Olyphant, Daveed Diggs, Skyler Gisondo, Laura Harrier, Rosalind Chao, Kimberly Quinn, Loretta Devine, Ravi Kapoor","6":"United States","7":"September 24, 2021","8":"2021","9":"PG-13","10":"104 min","11":"Comedies, Dramas","12":"A woman adjusting to life after a loss contends with a feisty bird that's taken over her garden — and a husband who's struggling to find a way forward."},{"1":"s11","2":"TV Show","3":"Vendetta: Truth, Lies and The Mafia","4":"NA","5":"NA","6":"NA","7":"September 24, 2021","8":"2021","9":"TV-MA","10":"1 Season","11":"Crime TV Shows, Docuseries, International TV Shows","12":"Sicily boasts a bold \"Anti-Mafia\" coalition. But what happens when those trying to bring down organized crime are accused of being criminals themselves?"},{"1":"s12","2":"TV Show","3":"Bangkok Breaking","4":"Kongkiat Komesiri","5":"Sukollawat Kanarot, Sushar Manaying, Pavarit Mongkolpisit, Sahajak Boonthanakit, Suthipongse Thatphithakkul, Bhasaworn Bawronkirati, Daweerit Chullasapya, Waratthaya Wongchayaporn, Kittiphoom Wongpentak, Abhicha Thanachanun, Nophand Boonyai, Kittipong Khamsat, Arisara Wongchalee, Jaytiya Naiwattanakul, Pantipa Arunwattanachai, Panupan Jantanawong, Kungtap Saelim, Phumphat Chartsuriyakiat, Issara Veranitinunt, Keerati Sivakuae, Panjai Sirisuwan, Supranee Charoenpol, Suda Chuenban, Visaka Banhansupavat, Pitchatorn Santinatornkul","6":"NA","7":"September 23, 2021","8":"2021","9":"TV-MA","10":"1 Season","11":"Crime TV Shows, International TV Shows, TV Action & Adventure","12":"Struggling to earn a living in Bangkok, a man joins an emergency rescue service and realizes he must unravel a citywide conspiracy."},{"1":"s13","2":"Movie","3":"Je Suis Karl","4":"Christian Schwochow","5":"Luna Wedler, Jannis Niewöhner, Milan Peschel, Edin Hasanović, Anna Fialová, Marlon Boess, Victor Boccard, Fleur Geffrier, Aziz Dyab, Mélanie Fouché, Elizaveta Maximová","6":"Germany, Czech Republic","7":"September 23, 2021","8":"2021","9":"TV-MA","10":"127 min","11":"Dramas, International Movies","12":"After most of her family is murdered in a terrorist bombing, a young woman is unknowingly lured into joining the very group that killed them."},{"1":"s14","2":"Movie","3":"Confessions of an Invisible Girl","4":"Bruno Garotti","5":"Klara Castanho, Lucca Picon, Júlia Gomes, Marcus Bessa, Kiria Malheiros, Fernanda Concon, Gabriel Lima, Caio Cabral, Leonardo Cidade, Jade Cardozo","6":"NA","7":"September 22, 2021","8":"2021","9":"TV-PG","10":"91 min","11":"Children & Family Movies, Comedies","12":"When the clever but socially-awkward Tetê joins a new school, she'll do anything to fit in. But the queen bee among her classmates has other ideas."},{"1":"s15","2":"TV Show","3":"Crime Stories: India Detectives","4":"NA","5":"NA","6":"NA","7":"September 22, 2021","8":"2021","9":"TV-MA","10":"1 Season","11":"British TV Shows, Crime TV Shows, Docuseries","12":"Cameras following Bengaluru police on the job offer a rare glimpse into the complex and challenging inner workings of four major crime investigations."},{"1":"s16","2":"TV Show","3":"Dear White People","4":"NA","5":"Logan Browning, Brandon P. Bell, DeRon Horton, Antoinette Robertson, John Patrick Amedori, Ashley Blaine Featherson, Marque Richardson, Giancarlo Esposito","6":"United States","7":"September 22, 2021","8":"2021","9":"TV-MA","10":"4 Seasons","11":"TV Comedies, TV Dramas","12":"Students of color navigate the daily slights and slippery politics of life at an Ivy League college that's not nearly as \"post-racial\" as it thinks."},{"1":"s17","2":"Movie","3":"Europe's Most Dangerous Man: Otto Skorzeny in Spain","4":"Pedro de Echave García, Pablo Azorín Williams","5":"NA","6":"NA","7":"September 22, 2021","8":"2020","9":"TV-MA","10":"67 min","11":"Documentaries, International Movies","12":"Declassified documents reveal the post-WWII life of Otto Skorzeny, a close Hitler ally who escaped to Spain and became an adviser to world presidents."},{"1":"s18","2":"TV Show","3":"Falsa identidad","4":"NA","5":"Luis Ernesto Franco, Camila Sodi, Sergio Goyri, Samadhi Zendejas, Eduardo Yáñez, Sonya Smith, Alejandro Camacho, Azela Robinson, Uriel del Toro, Géraldine Bazán, Gabriela Roel, Marcus Ornellas","6":"Mexico","7":"September 22, 2021","8":"2020","9":"TV-MA","10":"2 Seasons","11":"Crime TV Shows, Spanish-Language TV Shows, TV Dramas","12":"Strangers Diego and Isabel flee their home in Mexico and pretend to be a married couple to escape his drug-dealing enemies and her abusive husband."},{"1":"s19","2":"Movie","3":"Intrusion","4":"Adam Salky","5":"Freida Pinto, Logan Marshall-Green, Robert John Burke, Megan Elisabeth Kelly, Sarah Minnich, Hayes Hargrove, Mark Sivertsen, Brandon Fierro, Antonio Valles, Clint Obenchain","6":"NA","7":"September 22, 2021","8":"2021","9":"TV-14","10":"94 min","11":"Thrillers","12":"After a deadly home invasion at a couple’s new dream house, the traumatized wife searches for answers — and learns the real danger is just beginning."},{"1":"s20","2":"TV Show","3":"Jaguar","4":"NA","5":"Blanca Suárez, Iván Marcos, Óscar Casas, Adrián Lastra, Francesc Garrido, Stefan Weinert, Julia Möller, Alicia Chojnowski","6":"NA","7":"September 22, 2021","8":"2021","9":"TV-MA","10":"1 Season","11":"International TV Shows, Spanish-Language TV Shows, TV Action & Adventure","12":"In the 1960s, a Holocaust survivor joins a group of self-trained spies who seek justice against Nazis fleeing to Spain to hide after WWII."}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 </div>
@@ -340,7 +335,7 @@ $ description  &lt;chr&gt; "As her father nears the end of his life, filmmaker K
 </div>
 <section id="data-issues" class="level3">
 <h3 data-anchor-id="data-issues">Data Issues</h3>
-<p>The following issues are to be explored further and addressed if able.</p>
+<p>The following data issues were identified to be addressed.</p>
 <ol type="1">
 <li><code>director</code>, <code>cast</code>, <code>country</code>, and <code>listed_in</code> columns contain multiple values per column</li>
 <li><code>date_added</code> column is a string in the form “Month Day, Year”</li>
@@ -355,7 +350,7 @@ $ description  &lt;chr&gt; "As her father nears the end of his life, filmmaker K
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>df_content <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>director, <span class="sc">-</span>cast, <span class="sc">-</span>country, <span class="sc">-</span>listed_in)</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># separate df and lengthen for director, cast, country, listed_in</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># separate df and lengthen for director</span></span>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>df_director <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(show_id, director) <span class="sc">%&gt;%</span></span>
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate_longer_delim</span>(director, <span class="at">delim =</span> <span class="st">", "</span>)</span>
@@ -700,8 +695,8 @@ flowchart TB
 <p>To finish my analysis I explored the main data found in <code>df_content</code>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># title count by release year &amp; type</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>df_content <span class="sc">%&gt;%</span> </span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(release_year, type) <span class="sc">%&gt;%</span> </span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>df_content <span class="sc">%&gt;%</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(release_year, type) <span class="sc">%&gt;%</span></span>
 <span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">title_count =</span> <span class="fu">n_distinct</span>(show_id)) <span class="sc">%&gt;%</span></span>
 <span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> type, <span class="at">values_from =</span> title_count, <span class="at">names_prefix =</span> <span class="st">"count_"</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(release_year)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -716,9 +711,9 @@ flowchart TB
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># title count by year added &amp; type</span></span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>df_content <span class="sc">%&gt;%</span> </span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">year_added =</span> <span class="fu">year</span>(date_added)) <span class="sc">%&gt;%</span> </span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year_added, type) <span class="sc">%&gt;%</span> </span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>df_content <span class="sc">%&gt;%</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">year_added =</span> <span class="fu">year</span>(date_added)) <span class="sc">%&gt;%</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year_added, type) <span class="sc">%&gt;%</span></span>
 <span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">title_count =</span> <span class="fu">n_distinct</span>(show_id)) <span class="sc">%&gt;%</span></span>
 <span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> type, <span class="at">values_from =</span> title_count, <span class="at">names_prefix =</span> <span class="st">"count_"</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(year_added)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -733,9 +728,9 @@ flowchart TB
 </div>
 </section>
 </section>
-<section id="export" class="level2">
+<section id="export" class="level2 page-columns page-full">
 <h2 data-anchor-id="export">Export</h2>
-<p>The primary analysis will take place in a Tableau dashboard<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. At this point the dataframes were exported as csv files for use in other applications.</p>
+<div class="page-columns page-full"><p>The primary analysis will take place in a Tableau dashboard<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. At this point the dataframes were exported as csv files for use in other applications.</p><div class="no-row-height column-margin column-container"><li id="fn1"><p><sup>1</sup>&nbsp;coming soon!</p></li></div></div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Export df_content to CSV</span></span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(df_content, <span class="fu">file.path</span>(<span class="st">"data"</span>, <span class="st">"df_content.csv"</span>))</span>
@@ -757,12 +752,7 @@ flowchart TB
 </section>
 
 
-<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
-
-<ol>
-<li id="fn1"><p>coming soon!<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-</ol>
-</section></div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -997,6 +987,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
           // default icon
           link.classList.add("external");
       }
@@ -1004,6 +996,30 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="mailto:w.brett.egbert@gmail.com">
+      <i class="bi bi-envelope-fill" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/crossinguard">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+    <div class="nav-footer-right">Egbert © 2023</div>
+  </div>
+</footer>
 
 
 

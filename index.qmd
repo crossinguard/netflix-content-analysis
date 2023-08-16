@@ -2,8 +2,11 @@
 title: "Netflix Content Analyis"
 author: "Brett Egbert"
 date: "2023-08-15"
-title-block-banner: true
+abstract: "Preparation of Netflix data for use in a Tableau dashboard."
+title-block-banner: false
 ---
+
+> To view my professional profile, cv, and other portfolio items, please visit <a href="https://wbegbert.netlify.app">wbegbert.netlify.app</a>
 
 ## Environment
 
@@ -69,7 +72,7 @@ The `head()` preview allows us to view the first few rows of data while the `gli
 ```{r preview-data}
 # preview dataframe
 df %>%
-  head(10)
+  head(20)
 
 # review column data types and sample values
 df %>%
@@ -77,7 +80,7 @@ df %>%
 ```
 
 ### Data Issues
-The following issues are to be explored further and addressed if able.
+The following data issues were identified to be addressed.
 
 1. `director`, `cast`, `country`, and `listed_in` columns contain multiple values per column
 2. `date_added` column is a string in the form "Month Day, Year"
@@ -93,7 +96,7 @@ I addressed the multiple values by separating the indicated columns from the pri
 df_content <- df %>%
   select(-director, -cast, -country, -listed_in)
 
-# separate df and lengthen for director, cast, country, listed_in
+# separate df and lengthen for director
 df_director <- df %>%
   select(show_id, director) %>%
   separate_longer_delim(director, delim = ", ")
@@ -320,8 +323,8 @@ To finish my analysis I explored the main data found in `df_content`.
 ```{r analysis-content-release-year-count}
 #| warning: false
 # title count by release year & type
-df_content %>% 
-  group_by(release_year, type) %>% 
+df_content %>%
+  group_by(release_year, type) %>%
   summarize(title_count = n_distinct(show_id)) %>%
   pivot_wider(names_from = type, values_from = title_count, names_prefix = "count_") %>%
   arrange(release_year)
@@ -330,9 +333,9 @@ df_content %>%
 ```{r analysis-content-year-added-count}
 #| warning: false
 # title count by year added & type
-df_content %>% 
-  mutate(year_added = year(date_added)) %>% 
-  group_by(year_added, type) %>% 
+df_content %>%
+  mutate(year_added = year(date_added)) %>%
+  group_by(year_added, type) %>%
   summarize(title_count = n_distinct(show_id)) %>%
   pivot_wider(names_from = type, values_from = title_count, names_prefix = "count_") %>%
   arrange(year_added)
