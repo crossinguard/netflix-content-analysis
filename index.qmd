@@ -3,10 +3,12 @@ title: "Netflix Content Analyis"
 author: "Brett Egbert"
 date: "2023-08-15"
 abstract: "Preparation of Netflix data for use in a Tableau dashboard."
-title-block-banner: false
+toc: true
+toc-depth: 4
+
 ---
 
-> To view my professional profile, cv, and other portfolio items, please visit <a href="https://wbegbert.netlify.app">wbegbert.netlify.app</a>
+*visit [wbegbert.netlify.app](https://wbegbert.netlify.app/) to view my professional profile, cv, and other portfolio items*
 
 ## Environment
 
@@ -318,7 +320,7 @@ df_genre_clean %>%
 
 ### `df_content`
 
-To finish my analysis I explored the main data found in `df_content`.
+To finish my data investigation I explored the main data found in `df_content`.
 
 ```{r analysis-content-release-year-count}
 #| warning: false

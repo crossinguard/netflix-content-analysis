@@ -130,7 +130,38 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#environment" id="toc-environment" class="nav-link active" data-scroll-target="#environment">Environment</a>
+  <ul>
+  <li><a href="#tools" id="toc-tools" class="nav-link" data-scroll-target="#tools">Tools</a></li>
+  <li><a href="#library" id="toc-library" class="nav-link" data-scroll-target="#library">Library</a></li>
+  <li><a href="#dataset" id="toc-dataset" class="nav-link" data-scroll-target="#dataset">Dataset</a></li>
+  </ul></li>
+  <li><a href="#prepare" id="toc-prepare" class="nav-link" data-scroll-target="#prepare">Prepare</a>
+  <ul>
+  <li><a href="#data-issues" id="toc-data-issues" class="nav-link" data-scroll-target="#data-issues">Data Issues</a>
+  <ul class="collapse">
+  <li><a href="#issue-1-director-cast-country-listed_in" id="toc-issue-1-director-cast-country-listed_in" class="nav-link" data-scroll-target="#issue-1-director-cast-country-listed_in">Issue 1: <code>director</code>, <code>cast</code>, <code>country</code>, <code>listed_in</code></a></li>
+  <li><a href="#issue-2-date_added" id="toc-issue-2-date_added" class="nav-link" data-scroll-target="#issue-2-date_added">Issue 2: <code>date_added</code></a></li>
+  <li><a href="#issue-3-rating-duration" id="toc-issue-3-rating-duration" class="nav-link" data-scroll-target="#issue-3-rating-duration">Issue 3: <code>rating</code> =&gt; <code>duration</code></a></li>
+  <li><a href="#issue-4-duration" id="toc-issue-4-duration" class="nav-link" data-scroll-target="#issue-4-duration">Issue 4: <code>duration</code></a></li>
+  </ul></li>
+  <li><a href="#workflow-summary" id="toc-workflow-summary" class="nav-link" data-scroll-target="#workflow-summary">Workflow Summary</a></li>
+  </ul></li>
+  <li><a href="#investigate" id="toc-investigate" class="nav-link" data-scroll-target="#investigate">Investigate</a>
+  <ul>
+  <li><a href="#df_director" id="toc-df_director" class="nav-link" data-scroll-target="#df_director"><code>df_director</code></a></li>
+  <li><a href="#df_cast" id="toc-df_cast" class="nav-link" data-scroll-target="#df_cast"><code>df_cast</code></a></li>
+  <li><a href="#df_country" id="toc-df_country" class="nav-link" data-scroll-target="#df_country"><code>df_country</code></a></li>
+  <li><a href="#df_genre" id="toc-df_genre" class="nav-link" data-scroll-target="#df_genre"><code>df_genre</code></a></li>
+  <li><a href="#df_content" id="toc-df_content" class="nav-link" data-scroll-target="#df_content"><code>df_content</code></a></li>
+  </ul></li>
+  <li><a href="#export" id="toc-export" class="nav-link" data-scroll-target="#export">Export</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content page-columns page-full" id="quarto-document-content">
@@ -170,9 +201,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<blockquote class="blockquote">
-<p>To view my professional profile, cv, and other portfolio items, please visit <a href="https://wbegbert.netlify.app">wbegbert.netlify.app</a></p>
-</blockquote>
+<p><em>visit <a href="https://wbegbert.netlify.app/">wbegbert.netlify.app</a> to view my professional profile, cv, and other portfolio items</em></p>
 <section id="environment" class="level2">
 <h2 data-anchor-id="environment">Environment</h2>
 <section id="tools" class="level3">
@@ -692,7 +721,7 @@ flowchart TB
 </section>
 <section id="df_content" class="level3">
 <h3 data-anchor-id="df_content"><code>df_content</code></h3>
-<p>To finish my analysis I explored the main data found in <code>df_content</code>.</p>
+<p>To finish my data investigation I explored the main data found in <code>df_content</code>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># title count by release year &amp; type</span></span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>df_content <span class="sc">%&gt;%</span></span>

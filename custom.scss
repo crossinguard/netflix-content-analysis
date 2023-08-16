@@ -1,14 +1,14 @@
 /*-- scss:defaults --*/
 // Color Primary
 $primary: #e63946 !default;
-$primary-faded: rgba($primary, 0.05) !default;
+$primary-faded: rgba($primary, 0.2) !default;
 $primary-light: lighten($primary, 20%) !default;
 $primary-dark: darken($primary, 20%) !default;
 $primary-darkest: darken($primary, 30%) !default;
 
 // Color Secondary
 $secondary: #a8dadc !default;
-$secondary-faded: rgba($secondary, 0.05) !default;
+$secondary-faded: rgba($secondary, 0.2) !default;
 $secondary-light: lighten($secondary, 20%) !default;
 $secondary-dark: darken($secondary, 20%) !default;
 $secondary-darkest: darken($secondary, 30%) !default;
@@ -40,6 +40,15 @@ ol {
   font-weight: 100;
 }
 
+p {
+  em {
+    border-left: 0.25rem solid $secondary-darkest;
+    border-radius: 0.4rem;
+    padding: 0.5rem;
+    background: $secondary-faded;
+  }
+}
+
 a {
   text-decoration: none;
   font-weight: 400;
@@ -48,9 +57,4 @@ a {
 
 code {
   color: $primary-light;
-}
-
-blockquote {
-  border-left: 0.25rem solid $secondary-darkest;
-  border-radius: 0.4rem;
 }
