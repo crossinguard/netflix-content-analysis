@@ -57,7 +57,7 @@ This dataset contains listings of all movies and tv shows available on Netflix.
 | `listed_in` | genre of the movie/tv show |
 | `description` | summary of the movie/tv show |
 
-: Netflix Movies and TV Shows dataset  columns
+: Netflix Movies and TV Shows dataset columns
 
 I imported the csv into a dataframe named `df`.
 

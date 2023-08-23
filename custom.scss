@@ -10,8 +10,8 @@ $primary-darkest: darken($primary, 30%) !default;
 $secondary: #a8dadc !default;
 $secondary-faded: rgba($secondary, 0.2) !default;
 $secondary-light: lighten($secondary, 20%) !default;
-$secondary-dark: darken($secondary, 20%) !default;
-$secondary-darkest: darken($secondary, 30%) !default;
+$secondary-dark: darken($secondary, 40%) !default;
+$secondary-darkest: darken($secondary, 65%) !default;
 
 // Background & Text
 $light: #edf6f9 !default;
@@ -42,10 +42,10 @@ ol {
 
 p {
   em {
-    border-left: 0.25rem solid $secondary-darkest;
+    border-left: 0.25rem solid $secondary-dark;
     border-radius: 0.4rem;
     padding: 0.5rem;
-    background: $secondary-faded;
+    background: $secondary-darkest;
   }
 }
 
