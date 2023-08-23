@@ -40,16 +40,6 @@ ol {
   font-weight: 100;
 }
 
-p {
-  em {
-    border-left: 0.25rem solid $secondary-dark;
-    border-radius: 0.4rem;
-    padding: 0.5rem;
-    // background: $secondary-darkest;
-    line-height: 2rem;
-  }
-}
-
 a {
   text-decoration: none;
   font-weight: 400;
@@ -58,4 +48,20 @@ a {
 
 code {
   color: $primary-light;
+}
+
+#promo {
+  width: 80%;
+  margin: auto;
+  text-align: center;
+  border-left: 0.25rem solid $secondary-dark;
+  border-radius: 0.4rem;
+  padding: 0.5rem;
+  background: $secondary-faded;
+}
+
+#coming-soon {
+  text-align: center;
+  padding-top: 2rem;
+  font-size: 1.5rem;
 }

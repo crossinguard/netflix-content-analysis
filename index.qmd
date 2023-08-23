@@ -5,10 +5,13 @@ date: "2023-08-15"
 abstract: "Preparation of Netflix data for use in a Tableau dashboard."
 toc: true
 toc-depth: 4
-
 ---
 
-*visit [wbegbert.netlify.app](https://wbegbert.netlify.app/) to view my professional profile, cv, and other portfolio items*
+::: {#promo}
+
+*Visit [wbegbert.netlify.app](https://wbegbert.netlify.app/) to view my professional profile, cv, and other portfolio items!*
+
+:::
 
 ## Environment
 
@@ -343,9 +346,9 @@ df_content %>%
   arrange(year_added)
 ```
 
-## Export
+### Export
 
-The primary analysis will take place in a Tableau dashboard^[coming soon!]. At this point the dataframes were exported as csv files for use in other applications.
+The primary analysis will take place in a Tableau dashboard. At this point the dataframes were exported as csv files for use in other applications.
 
 
 ```{r export-csv}
@@ -364,3 +367,59 @@ write_csv(df_country_clean, file.path("data", "df_country.csv"))
 # Export df_genre to CSV
 write_csv(df_genre_clean, file.path("data", "df_genre.csv"))
 ```
+
+## Tableau
+
+### Content by Release Date
+
+#### About
+
+A count of unique titles available on Netflix by the content's original release date.
+
+#### Interaction
+
+- The `Release Selector` parameter allows the date metric (i.e., *x*-axis) to be 'Release Year' for a detailed view or 'Release Decade' for a higher level view.
+- The `Release Year` filter indicates the maximum and minimum values present within the data. This filter may be used to limit the data to only content released within a specific range of years.
+- The `Content Type` legend indicates the content type within the graph. The legend may be used to highlight and label counts for relevant values.
+- Hovering over a value reveals a tooltip identifying the content type, release date (decade or year), the count by type, the total count, and the percent of total per release date.
+
+#### Worksheet
+
+```{=html}
+<div class='tableauPlaceholder' id='viz1692820268800' style='position: relative'><noscript><a href='#'><img alt='Content by Release Decade ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;IN&#47;INPROGRESSNetflixContentAnalysis&#47;ContentbyRelease&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='INPROGRESSNetflixContentAnalysis&#47;ContentbyRelease' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;IN&#47;INPROGRESSNetflixContentAnalysis&#47;ContentbyRelease&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-US' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1692820268800');                    var vizElement = divElement.getElementsByTagName('object')[0];                    vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';                    var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>
+```
+#### Activity
+
+1. **Content Evolution Over Decades**: Using the `Release Selector` parameter, compare the distribution of 'Movies' and 'TV Shows' over different decades. Are there certain decades when one content type was more prevalent than the other? What do you think might have influenced these variations in content distribution across decades?
+2. **High-Performing Years**: Identify the top five years with the highest combined count of 'Movies' and 'TV Shows'. Do these years share any common characteristics or trends? Does this align with any significant events or shifts in the entertainment industry during those years?
+3. **Shifts in Recent Years**: Focus on the most recent decades available in the data. Have you noticed any changes in the balance between 'Movies' and 'TV Shows' during this period? Are there any insights you can draw from this shift, such as changes in audience preferences or content production strategies?
+4. **Content Type Contribution to Average**: Are there specific years or decades where the combined count of 'Movies' and 'TV Shows' exceeds the overall average, as indicated by the reference line? Conversely, can you identify periods where the content count falls below the average? What insights can you draw from these variations in terms of content production trends and their influence on the overall average?
+
+### Content by Inclusion Date
+
+#### About
+
+A count of unique titles available on Netflix by the content's inclusion date on the platform^[Netflix launched its streaming media service on January 2007].
+
+#### Interaction
+
+- The `Release Year` filter indicates the maximum and minimum values present within the data. This filter may be used to limit the data to only content released within a specific range of years.
+- The `Content Type` legend indicates the content type within the graph. The legend may be used to highlight and label counts for relevant values.
+- Hovering over a value reveals a tooltip identifying the content type, inclusion date (year), the count by type, the total count, and the percent of total per inclusion date.
+
+#### Worksheet
+
+```{=html}
+<div class='tableauPlaceholder' id='viz1692820588001' style='position: relative'><noscript><a href='#'><img alt='Content by Inclusion Date ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;IN&#47;INPROGRESSNetflixContentAnalysis&#47;ContentbyInclusion&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='INPROGRESSNetflixContentAnalysis&#47;ContentbyInclusion' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;IN&#47;INPROGRESSNetflixContentAnalysis&#47;ContentbyInclusion&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-US' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1692820588001');                    var vizElement = divElement.getElementsByTagName('object')[0];                    vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';                    var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>
+```
+
+#### Activity
+
+1. **Early vs. Recent Additions**: Compare the distribution of content added to Netflix in its early years with that of more recent years. Are there noticeable differences in the pattern of content inclusion? How might these differences reflect changes in content acquisition and licensing strategies over time?
+2. **Content Spike Analysis**: Identify any years where the content count significantly exceeds the average reference line. What factors or trends might explain these spikes in content additions? What predictions could be made about future years?
+3. **Content Type Trends Over Time**: Focus on a specific type of content by selecting an option from the `Content Type` legend and selecting either 'Keep Only' or 'Exclude'. Observe its trend. Does the count of this content type increase steadily, exhibit fluctuations, or follow a different pattern? How does the average reference line differ between content types?^[changes to the visualization may be undone by selecting either the 'undo' or 'reset' icon from the bottom graphic menu]
+4. **Exploring Older Releases**: Set the `Release Year` filter's maximum value to your birth year. This will limit the visualization to exclude content released after your birth year (independent of the inclusion date it was added to Netflix). Focus specifically on 'Movie' content type. What insights can you draw about the platform's inclusion of older films? How does the average number of movies added per year to the platform change depending on your definition of an "older" release?
+
+::: {#coming-soon}
+Tableau dashboard under construction, more worksheets coming soon!
+:::

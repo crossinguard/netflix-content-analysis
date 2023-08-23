@@ -158,8 +158,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#df_country" id="toc-df_country" class="nav-link" data-scroll-target="#df_country"><code>df_country</code></a></li>
   <li><a href="#df_genre" id="toc-df_genre" class="nav-link" data-scroll-target="#df_genre"><code>df_genre</code></a></li>
   <li><a href="#df_content" id="toc-df_content" class="nav-link" data-scroll-target="#df_content"><code>df_content</code></a></li>
-  </ul></li>
   <li><a href="#export" id="toc-export" class="nav-link" data-scroll-target="#export">Export</a></li>
+  </ul></li>
+  <li><a href="#tableau" id="toc-tableau" class="nav-link" data-scroll-target="#tableau">Tableau</a>
+  <ul>
+  <li><a href="#content-by-release-date" id="toc-content-by-release-date" class="nav-link" data-scroll-target="#content-by-release-date">Content by Release Date</a>
+  <ul class="collapse">
+  <li><a href="#about" id="toc-about" class="nav-link" data-scroll-target="#about">About</a></li>
+  <li><a href="#interaction" id="toc-interaction" class="nav-link" data-scroll-target="#interaction">Interaction</a></li>
+  <li><a href="#worksheet" id="toc-worksheet" class="nav-link" data-scroll-target="#worksheet">Worksheet</a></li>
+  <li><a href="#activity" id="toc-activity" class="nav-link" data-scroll-target="#activity">Activity</a></li>
+  </ul></li>
+  <li><a href="#content-by-inclusion-date" id="toc-content-by-inclusion-date" class="nav-link" data-scroll-target="#content-by-inclusion-date">Content by Inclusion Date</a>
+  <ul class="collapse">
+  <li><a href="#about-1" id="toc-about-1" class="nav-link" data-scroll-target="#about-1">About</a></li>
+  <li><a href="#interaction-1" id="toc-interaction-1" class="nav-link" data-scroll-target="#interaction-1">Interaction</a></li>
+  <li><a href="#worksheet-1" id="toc-worksheet-1" class="nav-link" data-scroll-target="#worksheet-1">Worksheet</a></li>
+  <li><a href="#activity-1" id="toc-activity-1" class="nav-link" data-scroll-target="#activity-1">Activity</a></li>
+  </ul></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -201,7 +218,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<p><em>visit <a href="https://wbegbert.netlify.app/">wbegbert.netlify.app</a> to view my professional profile, cv, and other portfolio items</em></p>
+<div id="promo">
+<p><em>Visit <a href="https://wbegbert.netlify.app/">wbegbert.netlify.app</a> to view my professional profile, cv, and other portfolio items!</em></p>
+</div>
 <section id="environment" class="level2">
 <h2 data-anchor-id="environment">Environment</h2>
 <section id="tools" class="level3">
@@ -756,10 +775,9 @@ flowchart TB
 </div>
 </div>
 </section>
-</section>
-<section id="export" class="level2 page-columns page-full">
-<h2 data-anchor-id="export">Export</h2>
-<div class="page-columns page-full"><p>The primary analysis will take place in a Tableau dashboard<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. At this point the dataframes were exported as csv files for use in other applications.</p><div class="no-row-height column-margin column-container"><li id="fn1"><p><sup>1</sup>&nbsp;coming soon!</p></li></div></div>
+<section id="export" class="level3">
+<h3 data-anchor-id="export">Export</h3>
+<p>The primary analysis will take place in a Tableau dashboard. At this point the dataframes were exported as csv files for use in other applications.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Export df_content to CSV</span></span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(df_content, <span class="fu">file.path</span>(<span class="st">"data"</span>, <span class="st">"df_content.csv"</span>))</span>
@@ -776,8 +794,74 @@ flowchart TB
 <span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Export df_genre to CSV</span></span>
 <span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(df_genre_clean, <span class="fu">file.path</span>(<span class="st">"data"</span>, <span class="st">"df_genre.csv"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</section>
+</section>
+<section id="tableau" class="level2 page-columns page-full">
+<h2 data-anchor-id="tableau">Tableau</h2>
+<section id="content-by-release-date" class="level3">
+<h3 data-anchor-id="content-by-release-date">Content by Release Date</h3>
+<section id="about" class="level4">
+<h4 data-anchor-id="about">About</h4>
+<p>A count of unique titles available on Netflix by the content’s original release date.</p>
+</section>
+<section id="interaction" class="level4">
+<h4 data-anchor-id="interaction">Interaction</h4>
+<ul>
+<li>The <code>Release Selector</code> parameter allows the date metric (i.e., <em>x</em>-axis) to be ‘Release Year’ for a detailed view or ‘Release Decade’ for a higher level view.</li>
+<li>The <code>Release Year</code> filter indicates the maximum and minimum values present within the data. This filter may be used to limit the data to only content released within a specific range of years.</li>
+<li>The <code>Content Type</code> legend indicates the content type within the graph. The legend may be used to highlight and label counts for relevant values.</li>
+<li>Hovering over a value reveals a tooltip identifying the content type, release date (decade or year), the count by type, the total count, and the percent of total per release date.</li>
+</ul>
+</section>
+<section id="worksheet" class="level4">
+<h4 data-anchor-id="worksheet">Worksheet</h4>
+
+<div class="tableauPlaceholder" id="viz1692820268800" style="position: relative"><noscript><a href="#"><img alt="Content by Release Decade " src="https://public.tableau.com/static/images/IN/INPROGRESSNetflixContentAnalysis/ContentbyRelease/1_rss.png" style="border: none"></a></noscript><object class="tableauViz" style="display:none;"><param name="host_url" value="https%3A%2F%2Fpublic.tableau.com%2F"> <param name="embed_code_version" value="3"> <param name="site_root" value=""><param name="name" value="INPROGRESSNetflixContentAnalysis/ContentbyRelease"><param name="tabs" value="no"><param name="toolbar" value="yes"><param name="static_image" value="https://public.tableau.com/static/images/IN/INPROGRESSNetflixContentAnalysis/ContentbyRelease/1.png"> <param name="animate_transition" value="yes"><param name="display_static_image" value="yes"><param name="display_spinner" value="yes"><param name="display_overlay" value="yes"><param name="display_count" value="yes"><param name="language" value="en-US"></object></div>                <script type="text/javascript">                    var divElement = document.getElementById('viz1692820268800');                    var vizElement = divElement.getElementsByTagName('object')[0];                    vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';                    var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>
+</section>
+<section id="activity" class="level4">
+<h4 data-anchor-id="activity">Activity</h4>
+<ol type="1">
+<li><strong>Content Evolution Over Decades</strong>: Using the <code>Release Selector</code> parameter, compare the distribution of ‘Movies’ and ‘TV Shows’ over different decades. Are there certain decades when one content type was more prevalent than the other? What do you think might have influenced these variations in content distribution across decades?</li>
+<li><strong>High-Performing Years</strong>: Identify the top five years with the highest combined count of ‘Movies’ and ‘TV Shows’. Do these years share any common characteristics or trends? Does this align with any significant events or shifts in the entertainment industry during those years?</li>
+<li><strong>Shifts in Recent Years</strong>: Focus on the most recent decades available in the data. Have you noticed any changes in the balance between ‘Movies’ and ‘TV Shows’ during this period? Are there any insights you can draw from this shift, such as changes in audience preferences or content production strategies?</li>
+<li><strong>Content Type Contribution to Average</strong>: Are there specific years or decades where the combined count of ‘Movies’ and ‘TV Shows’ exceeds the overall average, as indicated by the reference line? Conversely, can you identify periods where the content count falls below the average? What insights can you draw from these variations in terms of content production trends and their influence on the overall average?</li>
+</ol>
+</section>
+</section>
+<section id="content-by-inclusion-date" class="level3 page-columns page-full">
+<h3 data-anchor-id="content-by-inclusion-date">Content by Inclusion Date</h3>
+<section id="about-1" class="level4 page-columns page-full">
+<h4 data-anchor-id="about-1">About</h4>
+<div class="page-columns page-full"><p>A count of unique titles available on Netflix by the content’s inclusion date on the platform<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p><div class="no-row-height column-margin column-container"><li id="fn1"><p><sup>1</sup>&nbsp;Netflix launched its streaming media service on January 2007</p></li></div></div>
+</section>
+<section id="interaction-1" class="level4">
+<h4 data-anchor-id="interaction-1">Interaction</h4>
+<ul>
+<li>The <code>Release Year</code> filter indicates the maximum and minimum values present within the data. This filter may be used to limit the data to only content released within a specific range of years.</li>
+<li>The <code>Content Type</code> legend indicates the content type within the graph. The legend may be used to highlight and label counts for relevant values.</li>
+<li>Hovering over a value reveals a tooltip identifying the content type, inclusion date (year), the count by type, the total count, and the percent of total per inclusion date.</li>
+</ul>
+</section>
+<section id="worksheet-1" class="level4">
+<h4 data-anchor-id="worksheet-1">Worksheet</h4>
+
+<div class="tableauPlaceholder" id="viz1692820588001" style="position: relative"><noscript><a href="#"><img alt="Content by Inclusion Date " src="https://public.tableau.com/static/images/IN/INPROGRESSNetflixContentAnalysis/ContentbyInclusion/1_rss.png" style="border: none"></a></noscript><object class="tableauViz" style="display:none;"><param name="host_url" value="https%3A%2F%2Fpublic.tableau.com%2F"> <param name="embed_code_version" value="3"> <param name="site_root" value=""><param name="name" value="INPROGRESSNetflixContentAnalysis/ContentbyInclusion"><param name="tabs" value="no"><param name="toolbar" value="yes"><param name="static_image" value="https://public.tableau.com/static/images/IN/INPROGRESSNetflixContentAnalysis/ContentbyInclusion/1.png"> <param name="animate_transition" value="yes"><param name="display_static_image" value="yes"><param name="display_spinner" value="yes"><param name="display_overlay" value="yes"><param name="display_count" value="yes"><param name="language" value="en-US"></object></div>                <script type="text/javascript">                    var divElement = document.getElementById('viz1692820588001');                    var vizElement = divElement.getElementsByTagName('object')[0];                    vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';                    var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>
+</section>
+<section id="activity-1" class="level4 page-columns page-full">
+<h4 data-anchor-id="activity-1">Activity</h4>
+<ol type="1">
+<li><strong>Early vs.&nbsp;Recent Additions</strong>: Compare the distribution of content added to Netflix in its early years with that of more recent years. Are there noticeable differences in the pattern of content inclusion? How might these differences reflect changes in content acquisition and licensing strategies over time?</li>
+<li><strong>Content Spike Analysis</strong>: Identify any years where the content count significantly exceeds the average reference line. What factors or trends might explain these spikes in content additions? What predictions could be made about future years?</li>
+<li><strong>Content Type Trends Over Time</strong>: Focus on a specific type of content by selecting an option from the <code>Content Type</code> legend and selecting either ‘Keep Only’ or ‘Exclude’. Observe its trend. Does the count of this content type increase steadily, exhibit fluctuations, or follow a different pattern? How does the average reference line differ between content types?<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></li>
+<li><strong>Exploring Older Releases</strong>: Set the <code>Release Year</code> filter’s maximum value to your birth year. This will limit the visualization to exclude content released after your birth year (independent of the inclusion date it was added to Netflix). Focus specifically on ‘Movie’ content type. What insights can you draw about the platform’s inclusion of older films? How does the average number of movies added per year to the platform change depending on your definition of an “older” release?</li>
+</ol>
+<div class="no-row-height column-margin column-container"><li id="fn2"><p><sup>2</sup>&nbsp;changes to the visualization may be undone by selecting either the ‘undo’ or ‘reset’ icon from the bottom graphic menu</p></li></div><div id="coming-soon">
+<p>Tableau dashboard under construction, more worksheets coming soon!</p>
+</div>
 
 
+</section>
+</section>
 </section>
 
 
